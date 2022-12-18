@@ -1,0 +1,29 @@
+Leetcode 862
+public int shortestSubarray(int[] nums, int k) {
+        int n = nums.length;
+        long sum = 0;
+        Deque<long[]> dq = new LinkedList<>(); //(index,sum) pairs
+        int ans = Integer.MAX_VALUE;
+        for(int i = 0 ;i < n; i++) {
+            sum += nums[i]; //s2
+
+            // Maintain sum in dq as increasing order
+
+            while(dq.size() > 0 && dq.peekLast()[1] >= sum){
+                dq.removeLast();
+            }
+            dq.addLast(new long[]{i,sum});
+
+            //check sum >= k
+
+            if(sum >= k) ans = Math.min(ans,i+1);
+
+            //Check any possiblele s2 - s1;
+            while(dq.size() > 0 && sum-dq.peekFirst()[1] >= k){
+                    ans = Math.min(ans,i-(int)dq.peekFirst()[0]);
+                    dq.removeFirst();
+            }
+        }
+        if(ans == Integer.MAX_VALUE) return -1;
+        return ans;
+    }
