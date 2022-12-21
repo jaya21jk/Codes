@@ -72,3 +72,64 @@ class Solution {
         return 0;
     }
 }
+
+//////////////////   1011. Capacity To Ship Packages Within D Days /////////////////////////
+
+
+class Solution {
+    private boolean isPossible(int[] weights,int beltWeight,int days){
+        int n = weights.length;
+        int currweight = 0;
+        int currDay = 1;
+        for(int i=0; i < n ; i++){
+            currweight += weights[i];
+            if(currweight > beltWeight){
+                currweight = weights[i];
+                currDay++;
+            }
+        }
+        return currDay <= days;
+    }
+    public int shipWithinDays(int[] weights, int D) {
+
+        // int maxWeight = Integer.MIN_VALUE;
+        // int totalWeight = 0;
+        // for(int ele : weights){
+        //     maxWeight = Math.max(maxWeight,ele);
+        //     totalWeight += ele;
+        // }
+
+        // int start = maxWeight;
+        // int end = totalWeight;
+        // int ans = -1;
+
+        // while(start <= end){
+        //     int mid = (start+end)/2;
+        //     if(isPossible(weights,mid,days)){
+        //         ans = mid;
+        //         end = mid-1;
+        //     }
+        //     else start = mid+1;
+        // }
+        // return ans;
+
+        int left = 0, right = 0;
+        for (int w: weights) {
+            left = Math.max(left, w);
+            right += w ;
+        }
+        while (left < right) {
+            int mid = (left + right) / 2, need = 1, cur = 0;
+            for (int w: weights) {
+                if (cur + w > mid) {
+                    need += 1;
+                    cur = 0;
+                }
+                cur += w;
+            }
+            if (need > D) left = mid + 1;
+            else right = mid;
+        }
+        return left;
+    }
+}
