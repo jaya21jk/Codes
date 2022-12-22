@@ -133,3 +133,53 @@ class Solution {
         return left;
     }
 }
+
+/////////////  1482. Minimum Number of Days to Make m Bouquets ///////////////////
+
+class Solution {
+
+    private boolean isPossible(int[] boomDay, int currDay, int m, int k){
+        int flowers = 0;
+        int boques = 0;
+        int n = boomDay.length;
+
+        for(int i = 0 ; i < n ; i++){
+            if(boomDay[i] <= currDay) flowers++;
+            else flowers = 0;
+
+            if(flowers == k){
+                flowers = 0;
+                boques++;
+                if(boques == m) return true;
+            }
+        }
+        return false;
+    }
+
+    public int minDays(int[] bloomDay, int m, int k) {
+        int minDay = Integer.MAX_VALUE;
+        int maxDay = Integer.MIN_VALUE;
+        int n = bloomDay.length;
+
+       // if( m * k > n) return -1;
+        
+        for(int i=0 ; i < n ; i++){
+            minDay = Math.min(minDay,bloomDay[i]);
+            maxDay = Math.max(maxDay,bloomDay[i]);
+        }
+
+        int start = minDay;
+        int end = maxDay;
+        int ans = -1;
+
+        while(start <= end){
+            int mid = (start+end) / 2;
+            if(isPossible(bloomDay , mid, m , k)){
+                ans = mid;
+                end = mid-1;
+            }
+            else start = mid+1;
+        }
+        return ans;
+    }
+}
