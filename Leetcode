@@ -183,3 +183,50 @@ class Solution {
         return ans;
     }
 }
+
+//////////////////    isCousins -- BineryTree    ////////////////////
+
+public boolean isCousinsLevelOrderTraversal(TreeNode root, int x, int y) {
+ 
+      /* Declare two HashMap
+       *  
+       *  In one HashMap keep node and it's parent node value
+       *  In second HashMap keep node and it's level
+       */
+       Map<Integer, Integer> nodeParentMap = new HashMap<>();
+       Map<Integer, Integer> levelMap = new HashMap<>();
+ 
+       Queue<TreeNode> qu = new LinkedList<>();
+       qu.add(root);
+ 
+       nodeParentMap.put(root.val, 0);
+       levelMap.put(root.val, 0);
+ 
+       while(!qu.isEmpty()) {           
+          TreeNode temp = qu.poll();
+ 
+          if(temp.left != null) {
+             qu.add(temp.left);
+ 
+             nodeParentMap.put(temp.left.val, temp.val);
+             levelMap.put(temp.left.val, levelMap.get(temp.val)+1);
+          }
+ 
+          if(temp.right != null) {
+             qu.add(temp.right);
+ 
+             nodeParentMap.put(temp.right.val, temp.val);
+             levelMap.put(temp.right.val, levelMap.get(temp.val)+1);
+          }
+       }       
+ 
+        /*
+         * Two nodes of a binary tree are cousins if they have the same depth, but have different parents.
+         */
+         if( levelMap.get(x) == levelMap.get(y)
+           && nodeParentMap.get(x) != nodeParentMap.get(y)) {
+              return true;
+          }
+ 
+        return false;
+  }
