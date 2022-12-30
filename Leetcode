@@ -230,3 +230,46 @@ public boolean isCousinsLevelOrderTraversal(TreeNode root, int x, int y) {
  
         return false;
   }
+  
+  ////////////////////////////      394. Decode String     ///////////////////////////
+  
+  
+  class Solution {
+    public String decodeString(String s) {
+
+        Stack<Character> st = new Stack<>();
+
+        for(char ch : s.toCharArray()) {
+            if(ch == ']'){
+                StringBuilder str = new StringBuilder();
+                while(st.size() > 0 && st.peek() != '[') {
+                    str.append(st.pop());
+                }
+                st.pop();
+                
+                String temp = new String();
+
+                while(st.size() > 0 && Character.isDigit(st.peek())){
+                    temp = st.pop() + temp;
+                }
+                int num = Integer.parseInt(temp);
+
+                while(num-- > 0) {
+                    for(int i = str.length() - 1 ;i >= 0 ; i--){
+                        st.push(str.charAt(i));
+                    }
+                }
+            }
+            else st.push(ch);
+        }
+
+        char[] res = new char[st.size()];
+        int i = st.size() - 1;
+        while(st.size() > 0) {
+            res[i--] = st.pop();
+        }
+
+        return new String(res);
+        
+    }
+}
