@@ -273,3 +273,31 @@ public boolean isCousinsLevelOrderTraversal(TreeNode root, int x, int y) {
         
     }
 }
+
+
+/////////////            Leetcode 395         ////////////
+
+
+public int longestSubstring(String s, int k) {
+
+		int n = s.length();
+	
+		int[] freq = new int[26];
+		for(int i =0 ; i < n ;i++) freq[s.charAt(i)-'a']++;
+		
+		int start = 0;
+		int end = 0;
+		int len = 0;
+		boolean valid = true;
+
+		for(end = 0 ;end < n ;end++){
+			if(freq[s.charAt(end)-'a'] > 0 && freq[s.charAt(end)-'a'] < k){
+				String subString = s.substring(start,end);
+				len = Math.max(len , longestSubstring(subString , k));
+				start = end + 1;
+				valid = false;
+			}
+		}
+		if(valid) return s.length();
+		else return Math.max(len , longestSubstring(s.substring(start),k));
+    }
